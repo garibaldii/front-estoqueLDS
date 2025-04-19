@@ -4,7 +4,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
 
 
 interface GraphProps {
-    data: { name: string, uv: number }[]; // Definindo o tipo esperado para os dados
+    data: { marca: string, modelo: number }[]; // Definindo o tipo esperado para os dados
 }
 
 export const Graph = ({ data }: GraphProps) => { // Desestruturando a propriedade
@@ -15,10 +15,10 @@ export const Graph = ({ data }: GraphProps) => { // Desestruturando a propriedad
             data={data}
         >
             <CartesianGrid stroke='#ccc' />
-            <XAxis dataKey='name' />
+            <XAxis dataKey='marca' />
             <YAxis />
             <Tooltip />
-            <Line type='monotone' dataKey='uv' stroke='#8884d8' />
+            <Line type='monotone' dataKey='modelo' stroke='#8884d8' />
         </LineChart>
     );
 }
