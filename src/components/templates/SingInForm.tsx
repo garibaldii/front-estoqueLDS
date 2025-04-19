@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 
 import { signIn } from "@/services/auth"
@@ -10,27 +12,33 @@ import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 
 
+
 export const SignInForm = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
+    const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
 
-        try {
 
-            console.log(password)
+        
+
+        try {
             const result = await signIn(email, password)
             console.log(result)
+
+            router.push("/dashboard")
+
         } catch (error: any) {
             setError(error.response.data.message) //takes the error from backend error treatment
         } finally {
             setLoading(false)
 
-        }
+        }   
     }
 
     return (
@@ -48,7 +56,7 @@ export const SignInForm = () => {
 
             <form
                 onSubmit={handleSubmit}
-                className="bg-custom-lds-blur w-1/4 rounded-lg space-y-6 min-h-[0px] flex flex-col justify-center"
+                className=" bg-custom-lds-blur w-1/4 rounded-lg space-y-6 min-h-[0px] flex flex-col justify-center"
             >
 
                 <div className="flex flex-col">
