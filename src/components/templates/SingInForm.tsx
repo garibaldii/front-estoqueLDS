@@ -31,7 +31,7 @@ export const SignInForm = () => {
             const result = await signIn(email, password)
             console.log(result)
 
-            router.push("/dashboard")
+            router.push("/pages/dashboard")
 
         } catch (error: any) {
             setError(error.response.data.message) //takes the error from backend error treatment

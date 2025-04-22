@@ -1,16 +1,20 @@
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 import { Button } from "../ui/button"
+
 import SaidaIcon from "../../../public/saidaIcon"
 import EntradaIcon from "../../../public/entradaIcon"
 import EstoqueIcon from "../../../public/estoqueIcon"
 import HistoricoIcon from "../../../public/historicoIcon"
 export const NavBar = () => {
 
+    const router = useRouter()
+
     return (
         <div className="bg-custom-lds-blur flex justify-around" >
 
-            <Button variant={"outline"} > <EntradaIcon /> Entrada</Button>
+            <Button variant={"outline"} onClick={() => router.push("/pages/entrada")} > <EntradaIcon /> Entrada</Button>
 
             <Button variant={"outline"}> <SaidaIcon /> Saída</Button>
 
