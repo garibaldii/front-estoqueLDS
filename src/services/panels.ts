@@ -7,3 +7,11 @@ export const getPanels = async () => {
 
     return data
 }
+
+export const postPanels = async (panel: any) => {
+    const response = await api.post("/painel", panel)
+
+    const data = response.data
+
+    return data
+}
