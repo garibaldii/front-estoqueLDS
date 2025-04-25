@@ -1,23 +1,29 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { useRouter } from "next/navigation"
-
 
 import { ProductTable } from "../molecules/ProductTable"
-import { Toast } from "../atoms/toast"
+import { Toast } from "../molecules/Toast"
 
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 
 import { alreadyExist } from "@/utils/localProductData"
-import ArrowBack from "../../../public/arrowBack"
-import { SucessModal } from "../atoms/SucessModal"
-import { ErrorModal } from "../atoms/ErrorModal"
+
+import { Modal } from "../molecules/Modal"
+import { GoBackButton } from "../atoms/GoBackButton"
+import { addToastMessage } from "@/utils/toastUtilities"
+import { isInputValid } from "@/utils/productUtils"
 
 
-export const ProductForm = ({ submitFunction }: any) => {
-    const router = useRouter()
+type ProductFormProps = {
+    submitFunction: (data: any[]) => Promise<any>;
+    title: string;
+    extraFields?: React.ReactNode
+    extraFieldsData?: Record<any, any>
+};
+
+export const ProductForm = ({ submitFunction, title, extraFields: extraField, extraFieldsData: extraFieldData }: ProductFormProps) => {
 
     const [marca, setMarca] = useState("")
     const [modelo, setModelo] = useState("")
@@ -27,55 +33,58 @@ export const ProductForm = ({ submitFunction }: any) => {
     const codigoRef = useRef<HTMLInputElement>(null)
 
     const [toastMessages, setToastMessages] = useState<string[]>([])
-
-    const [errorModal, setErrorModal] = useState<null | { title: string; description: string }>(null)
-    const [sucessModal, setSucessModal] = useState(false)
+    const [modal, setModal] = useState<null | { title: string; description: string }>(null)
 
     const [localData, setLocalData] = useState<any>([])
 
     const handleAddLocalData = () => {
-        if (!marca || !modelo || !codigoDeBarras || !potencia) {
+        if (isInputValid(marca, modelo, codigoDeBarras, potencia)) {
+            const newProduct = {
+                marca,
+                modelo,
+                codigoDeBarras,
+                potencia,
+                ...extraFieldData
+            }
 
-            setToastMessages((prevMessages) => [
-                ...prevMessages,
-                `Todos os campos são obrigatórios!`
-            ])
+            if (alreadyExist(newProduct, localData)) {
+                addToastMessage(setToastMessages, `Código de barras "${codigoDeBarras} já adicionado na lista"`)
+                setCodigoDeBarras("")
+                return
+            }
 
-            return
-        }
+            setLocalData((prev: any) => [...prev, newProduct])
 
-        const newProduct = {
-            marca,
-            modelo,
-            codigoDeBarras,
-            potencia
-        }
-
-        if (alreadyExist(newProduct, localData)) {
-            setToastMessages((prevMessages) => [
-                ...prevMessages,
-                `Código de Barras: "${newProduct.codigoDeBarras}" duplicado, nao foi adicionado a lista`
-            ])
 
             setCodigoDeBarras("")
             codigoRef.current?.focus()
             return
         }
 
-        setLocalData((prevData: any) => [newProduct, ...prevData])
-        setCodigoDeBarras("")
-        codigoRef.current?.focus()
+        addToastMessage(setToastMessages, `Todos os campos são obrigatórios`)
+        return
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        console.log(localData)
+        if (!localData.length) {
+            addToastMessage(setToastMessages, `Lista de produtos vazia, tente adicionar primeiro`)
+            return
+        }
 
         try {
             const result = await submitFunction(localData)
             console.log(result)
-            setSucessModal(true)
+
+            setModal({
+                title: "Sucesso!",
+                description: result.message
+            })
+            setLocalData([])
+
         } catch (error: any) {
-            setErrorModal({
+            setModal({
                 title: "Erro",
                 description: error.response.data.message
             })
@@ -85,19 +94,14 @@ export const ProductForm = ({ submitFunction }: any) => {
     return (
         <div className="flex justify-center items-center min-h-screen px-4">
 
-            <div
-                className="absolute top-6 left-6 cursor-pointer hover:scale-110 transition-transform duration-200"
-                onClick={() => router.back()}
-            >
-                <ArrowBack className="w-6 h-6" />
-            </div>
+            <GoBackButton />
 
             <form
                 onSubmit={handleSubmit}
                 className="bg-white rounded-2xl max-w-5xl flex flex-col h-full max-h-[90vh] overflow-hidden"
             >
                 <header className="bg-gray-300 text-center p-5 font-bold rounded-t-2xl text-xl font-mono">
-                    <h1>Cadastro de Painéis Fotovoltaicos ☀️</h1>
+                    <h1>{title}</h1>
                 </header>
 
                 <div className="p-6 flex flex-col flex-grow overflow-y-auto">
@@ -107,12 +111,14 @@ export const ProductForm = ({ submitFunction }: any) => {
                             placeholder="Marca"
                             onChange={(e) => setMarca(e.target.value)}
                             value={marca}
+                            required
                         />
                         <Input
                             className="bg-gray-200 w-[25%] focus:bg-white"
                             placeholder="Modelo"
                             onChange={(e) => setModelo(e.target.value)}
                             value={modelo}
+                            required
                         />
                         <Input
                             type="number"
@@ -120,7 +126,10 @@ export const ProductForm = ({ submitFunction }: any) => {
                             placeholder="Potência"
                             value={potencia}
                             onChange={(e) => setPotencia(e.target.value)}
+                            required
                         />
+
+                        {extraField}
                     </div>
 
                     <div className="flex items-center rounded-md bg-gray-200 px-4 py-2 mb-6 w-full">
@@ -137,6 +146,7 @@ export const ProductForm = ({ submitFunction }: any) => {
                                     handleAddLocalData()
                                 }
                             }}
+                            
                         />
                         <button
                             type="button"
@@ -146,9 +156,6 @@ export const ProductForm = ({ submitFunction }: any) => {
                             ADICIONAR
                         </button>
                     </div>
-
-
-
 
                     <div className="mb-6">
                         <ProductTable localData={localData} />
@@ -160,16 +167,13 @@ export const ProductForm = ({ submitFunction }: any) => {
                 </div>
             </form>
 
-            {sucessModal && <SucessModal
-                onClose={() => setSucessModal(false)}
-                title={"Sucesso!"}
-                description={"Entrada Realizada com Sucesso!"} />}
 
-            {errorModal && (
-                <ErrorModal
-                    onClose={() => setErrorModal(null)}
-                    title={errorModal.title}
-                    description={errorModal.description}
+
+            {modal && (
+                <Modal
+                    onClose={() => setModal(null)}
+                    title={modal.title}
+                    description={modal.description}
                 />
             )}
 
