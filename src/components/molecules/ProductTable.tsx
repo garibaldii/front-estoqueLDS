@@ -15,29 +15,30 @@ export function ProductTable({ localData }: any) {
     <div className="h-40 overflow-y-auto rounded-md border">
       <Table >
         <TableHeader>
-          <TableRow>
-            <TableHead >#</TableHead>
-            <TableHead className="w-[100px]">Marca</TableHead>
-            <TableHead>Modelo</TableHead>
-            <TableHead>Potência</TableHead>
-            <TableHead >Código de Barras</TableHead>
-          </TableRow>
+          {localData.length > 0 && (
+            <TableRow>
+              <TableHead>#</TableHead>
+              {Object.keys(localData[0]).map((key) => (
+                <TableHead key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</TableHead>
+              ))}
+            </TableRow>
+          )}
+
         </TableHeader>
         <TableBody>
           {/* Inverting local list to help operator visualize*/}
           {[...localData].reverse().map((product: any, index: number) => (
-
-            <TableRow key={product.codigoDeBarras}>
+            <TableRow key={index}>
               <TableCell className="font-medium">{localData.length - index}</TableCell>
-              <TableCell className="font-medium">{product.marca}</TableCell>
-              <TableCell>{product.modelo}</TableCell>
-              <TableCell>{product.potencia}</TableCell>
-              <TableCell>{product.codigoDeBarras}</TableCell>
+
+              {Object.entries(product).map(([key, value]) => (
+                <TableCell key={key}>{String(value)}</TableCell>
+              ))}
             </TableRow>
           ))}
         </TableBody>
 
       </Table>
-    </div>
+    </div >
   );
 }
