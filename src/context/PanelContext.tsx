@@ -7,7 +7,7 @@ import { getPanels } from '@/services/panels'
 type PanelContextType = {
     panels: any[]
     loading: boolean
-    refreshData: () => void
+    refreshPanelData: () => void
 }
 
 const PanelContext = createContext<PanelContextType | undefined>(undefined)
@@ -33,7 +33,7 @@ export const PanelProvider = ({children}: {children: ReactNode}) => {
     }, [])
 
     return(
-        <PanelContext.Provider value={{panels, loading, refreshData: fetchData}}>
+        <PanelContext.Provider value={{panels, loading, refreshPanelData: fetchData}}>
             {children}
         </PanelContext.Provider>
     )

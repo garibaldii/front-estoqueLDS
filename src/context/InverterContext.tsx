@@ -7,7 +7,7 @@ import { getInverters } from '@/services/inverter'
 type InverterContextType = {
     inverters: any[]
     loading: boolean
-    refreshData: () => void
+    refreshInverterData: () => void
 }
 
 export const InverterContext = createContext<InverterContextType | undefined>(undefined)
@@ -33,7 +33,7 @@ export const InverterProvider = ({children}: {children: ReactNode}) => {
     }, [])
 
     return(
-        <InverterContext.Provider value={{inverters, loading, refreshData: fetchData}}>
+        <InverterContext.Provider value={{inverters, loading, refreshInverterData: fetchData}}>
             {children}
         </InverterContext.Provider>
     )
