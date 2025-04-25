@@ -15,6 +15,7 @@ import { isInputValid } from "@/utils/orderUtils"
 import { addToastMessage } from "@/utils/toastUtilities"
 import { fetchProductByCode } from "@/utils/productUtils"
 import { alreadyExist } from "@/utils/localProductData"
+import ClearListButton from "@/components/atoms/ClearListButton"
 
 export const Orders = () => {
 
@@ -135,6 +136,9 @@ export const Orders = () => {
                     <div className="mb-6">
                         <ProductTable localData={listaProdutos} />
                     </div>
+
+                    <ClearListButton setLocalData={setListaProdutos} />
+
 
                     <Button type="submit" className="w-full font-mono bg-green-500 text-md">
                         Concluir
