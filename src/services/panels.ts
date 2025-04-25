@@ -8,8 +8,8 @@ export const getPanels = async () => {
     return data
 }
 
-export const postPanels = async (panel: any) => {
-    const response = await api.post("/painel", panel)
+export const postPanels = async (panels: any[]) => {
+    const response = await api.post("/painel", panels)
 
     const data = response.data
 
