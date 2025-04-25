@@ -3,6 +3,7 @@
 import { groupByModel } from '@/utils/filters';
 import {  XAxis, YAxis, Tooltip, CartesianGrid, Bar, BarChart} from 'recharts';
 
+import { useMemo } from 'react';
 
 interface GraphProps {
     data: { marca: string, modelo: string }[]; 
@@ -11,15 +12,15 @@ interface GraphProps {
 
 export const Graph = ({ data }: GraphProps) => { 
 
-    //filter type appiyed
-    const filterData = groupByModel(data)
+  
+  const filteredData = useMemo(() => groupByModel(data), [data]);
 
 
     return (
         <BarChart
           width={500}
           height={300}
-          data={filterData} // Passa os dados agrupados
+          data={filteredData} // Passa os dados agrupados
         >
           <CartesianGrid stroke="#ccc" />
           <XAxis dataKey={`modelo`} /> {/* Exibe o modelo no eixo X */}
