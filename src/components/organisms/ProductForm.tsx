@@ -14,6 +14,7 @@ import { Modal } from "../molecules/Modal"
 import { GoBackButton } from "../atoms/GoBackButton"
 import { addToastMessage } from "@/utils/toastUtilities"
 import { isInputValid } from "@/utils/productUtils"
+import ClearListButton from "../atoms/ClearListButton"
 
 
 type ProductFormProps = {
@@ -39,6 +40,8 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
 
     const handleAddLocalData = () => {
         if (isInputValid(marca, modelo, codigoDeBarras, potencia)) {
+
+            //Recolhe os dados do produto
             const newProduct = {
                 marca,
                 modelo,
@@ -47,16 +50,20 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                 ...extraFieldData
             }
 
+            //verifica existência na lista local
             if (alreadyExist(newProduct, localData)) {
                 addToastMessage(setToastMessages, `Código de barras "${codigoDeBarras} já adicionado na lista"`)
                 setCodigoDeBarras("")
                 return
             }
 
+            //adiciona a lista
             setLocalData((prev: any) => [...prev, newProduct])
 
-
+            //limpa código de barras
             setCodigoDeBarras("")
+
+            //foca no input para a próxima leitura
             codigoRef.current?.focus()
             return
         }
@@ -148,6 +155,9 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                             }}
                             
                         />
+
+                        
+
                         <button
                             type="button"
                             className="text-green-500 font-bold font-mono hover:underline ml-4"
@@ -161,7 +171,10 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                         <ProductTable localData={localData} />
                     </div>
 
-                    <Button type="submit" className="w-full font-mono bg-green-500 text-md">
+                    <ClearListButton setLocalData={setLocalData}/>
+
+
+                    <Button type="submit" className="w-full font-mono bg-green-500 text-md mt-3">
                         Concluir
                     </Button>
                 </div>
