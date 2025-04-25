@@ -7,3 +7,11 @@ export const getInverters = async () => {
 
     return data
 }
+
+export const postInverters = async (inverters: any[]) => {
+    const response = await api.post("/inversor", inverters)
+
+    const data = response.data
+    
+    return data
+}
