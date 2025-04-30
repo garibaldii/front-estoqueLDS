@@ -168,7 +168,7 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                     </div>
 
                     <div className="mb-6">
-                        <ProductTable localData={localData} />
+                        <ProductTable localData={localData} setLocalData={setLocalData} />
                     </div>
 
                     <ClearListButton setLocalData={setLocalData}/>
@@ -187,6 +187,7 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                     onClose={() => setModal(null)}
                     title={modal.title}
                     description={modal.description}
+                    hasBackDrop={true}
                 />
             )}
 
