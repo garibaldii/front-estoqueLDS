@@ -9,9 +9,9 @@ import { useEffect } from "react";
 
 const Dashboard = () => {
     const { inverters, loading } = useInverter()
-    const { panels, refreshPanelData: refreshData } = usePanel()
+    const { panels, refreshPanelData } = usePanel()
 
-    useEffect(() => {refreshData()}, [])
+    useEffect(() => {refreshPanelData()}, [])
 
     return (
         <div>
