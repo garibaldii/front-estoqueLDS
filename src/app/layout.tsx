@@ -17,7 +17,7 @@ export default function RootLayout({
 
 
   return (
-    <html lang="pt-BR" className="overflow-hidden">
+    <html lang="pt-BR" className='overflow-x-hidden'>
       <body className={`${inter.className} box-border`}>
         <div className="bg-custom-lds w-[100vw] flex flex-col  ">
           {children}
