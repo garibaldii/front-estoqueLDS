@@ -3,7 +3,7 @@
 import { ProductForm } from "@/components/organisms/ProductForm"
 import { postPanels } from "@/services/panels"
 
-export const PanelRegister = () => {
+ const PanelRegister = () => {
 
 
     return(
