@@ -9,7 +9,7 @@ export const api = axios.create({
     },
 });
 
-//this interceptor request will put jwt token (that came from api) in every api's
+//this interceptor request will put jwt token (that came from api) in every call
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("token")
 
