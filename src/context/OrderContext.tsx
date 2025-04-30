@@ -29,7 +29,10 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     }
 
 
-    useEffect(() => { fetchData(), [] })
+    useEffect(() => {
+        fetchData()
+    }, [])
+
 
     return (
         <OrderContext.Provider value={{ orders, loading, refreshOrderData: fetchData }}>
@@ -41,7 +44,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 export const useOrder = () => {
     const context = useContext(OrderContext)
 
-    if(!context) throw new Error("useOrder must be used within OrderProvider!")
-    
+    if (!context) throw new Error("useOrder must be used within OrderProvider!")
+
     return context
 }
