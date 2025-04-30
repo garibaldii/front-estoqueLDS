@@ -10,6 +10,8 @@ import { signIn } from "@/services/auth"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
+import ReloadingIcon from "../../../public/reloadingIcon"
+
 
 
 
@@ -25,20 +27,16 @@ export const SignInForm = () => {
         setLoading(true)
 
 
-        
-
         try {
             const result = await signIn(email, password)
-            console.log(result)
 
             router.push("/pages/dashboard")
+            console.log(result)
 
         } catch (error: any) {
             setError(error.response.data.message) //takes the error from backend error treatment
-        } finally {
             setLoading(false)
-
-        }   
+        }
     }
 
     return (
@@ -80,7 +78,7 @@ export const SignInForm = () => {
                         type="password"
                         id="password"
                         value={password}
-                        onChange={(e) => { 
+                        onChange={(e) => {
                             setPassword(e.target.value)
                             setError("")
                         }}
@@ -90,7 +88,7 @@ export const SignInForm = () => {
                 </div>
 
                 <Button type="submit" disabled={loading} className="w-full">
-                    {loading ? "Loging..." : "Login"}
+                    {loading ? <ReloadingIcon/> : "Login"}
                 </Button>
 
                 <p className="text-red-700">{error}</p>
