@@ -31,6 +31,7 @@ const columns: ColumnDef<Product>[] = [
             return <div>{row.getValue("modelo")}</div>
         }
     },
+
     {
         accessorKey: "potencia",
         header: "Potência",
@@ -53,6 +54,7 @@ interface Props {
 }
 
 
-export default function ProductDataTable({ products: products }: Props) {
+export default function ProductDataTable({ products }: Props) {
+
     return <DataTable columns={columns} data={products} pageSize={5} searchFields={['marca', 'modelo', 'potencia']} />
 }
