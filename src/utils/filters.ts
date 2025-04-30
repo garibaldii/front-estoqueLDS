@@ -10,7 +10,6 @@ export const groupByModel = (data: { modelo: string }[]) => {
     }))
 }
 
-
 export const groupByKeys = <T extends Record<string, any>>(
     data: T[],
     keys: (keyof T)[]
@@ -39,3 +38,6 @@ export const groupByKeys = <T extends Record<string, any>>(
     })
 }
 
+export const countModelQuantity = (data: any[]) => {
+    return data.length
+}
