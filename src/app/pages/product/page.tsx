@@ -7,7 +7,7 @@ import { useInverter } from "@/context/InverterContext"
 import { usePanel } from "@/context/PanelContext"
 
 import { countModelQuantity, groupByKeys } from "@/utils/filters"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 import {
@@ -30,9 +30,6 @@ const Inventory = () => {
     //formatar os dados para melhor visualização
     const filteredPanels = groupByKeys(panels, ["marca", "modelo", "potencia",])
     const filteredInverters = groupByKeys(inverters, ["marca", "modelo", "potencia"])
-
-
-    const [range, setRange] = useState([100, 400])
 
     useEffect(() => {
         refreshInverterData()
@@ -59,7 +56,7 @@ const Inventory = () => {
                                 <DropdownMenuShortcut className="w-2/5">Cadastro manual, serão lidos os painéis via código de barras</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => router.push("/pages/product/incoming/import")}>
                                 Subir Planilha de Produtos
                                 <DropdownMenuShortcut className="w-2/5">Cadastro em lote, preencher planilha e subir na plataforma</DropdownMenuShortcut>
                             </DropdownMenuItem>
