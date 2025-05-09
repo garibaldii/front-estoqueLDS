@@ -5,6 +5,7 @@ import { NavBar } from "@/components/organisms/NavBar"
 
 import { Button } from "@/components/ui/button"
 import RightArrow from "../../../../../../public/rightArrow"
+import ArrowBack from "../../../../../../public/arrowBack"
 
 const ProductTypeDecisor = () => {
     const router = useRouter()
@@ -14,6 +15,17 @@ const ProductTypeDecisor = () => {
             <NavBar />
 
             <div className="p-10">
+
+
+                <div className="flex">
+                    <div>
+                        <ArrowBack width={30} className="rounded-full  transition-colors duration-300 cursor-pointer hover:bg-slate-50 " onClick={() => router.back()} />
+                    </div>
+                    <p className="ml-2 mb-6 text-lg hover:underline hover:cursor-pointer" onClick={() => router.back()}>Produtos</p>
+                </div>
+                <h1 className="font-bold text-3xl mb-6 text-gray-700 ">Cadastrar Produtos Manualmente</h1>
+
+
                 <div className="flex flex-col bg-white rounded-lg w-full shadow-md">
                     <div className="flex">
                         <h1 className="font-bold text-2xl p-6">Qual opção deseja cadastrar?</h1>
