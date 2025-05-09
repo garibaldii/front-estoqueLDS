@@ -27,7 +27,7 @@ const Inventory = () => {
 
     const router = useRouter()
 
-    //formatar os dados para melhor visualização
+    //formatar os dados para melhor visualização, unindo todos os produtos que possuem os três atributos em comum em uma única linha.
     const filteredPanels = groupByKeys(panels, ["marca", "modelo", "potencia",])
     const filteredInverters = groupByKeys(inverters, ["marca", "modelo", "potencia"])
 
