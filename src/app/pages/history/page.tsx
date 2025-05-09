@@ -1,16 +1,13 @@
 'use client'
 
 import OrderDataTable from "@/components/organisms/datatable/_components/orders-datatable"
-import ProductDataTable from "@/components/organisms/datatable/_components/product-datatable"
 import { NavBar } from "@/components/organisms/NavBar"
 import { useOrder } from "@/context/OrderContext"
-import { usePanel } from "@/context/PanelContext"
 import { useEffect } from "react"
 
 export const OutputHistory = () => {
 
     const { orders, refreshOrderData } = useOrder()
-    const {panels} = usePanel()
 
     useEffect(() => {
         refreshOrderData()
