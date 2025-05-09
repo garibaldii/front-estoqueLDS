@@ -11,7 +11,7 @@ export const Modal = ({ onClose, title, description, hasBackDrop }: Props) => {
     return (
         <div className={`fixed inset-0  flex items-center justify-center p-4 w-full ${hasBackDrop ? " bg-black bg-opacity-60" : ""}`}>
             <div className="bg-white rounded-2xl w-full max-w-3xl p-6 text-center shadow-lg overflow-auto">
-                <div className="bg-gray-500 text-white rounded-t-xl py-2 text-lg font-semibold">
+                <div className="bg-gray-50 text-black rounded-t-xl py-2 text-lg font-semibold">
                     {title}
                 </div>
 
