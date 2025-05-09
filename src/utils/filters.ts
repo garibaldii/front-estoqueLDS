@@ -10,6 +10,9 @@ export const groupByModel = (data: { modelo: string }[]) => {
     }))
 }
 
+
+//agrupa através das chaves que serão explícitas ao chamar o código, 
+//exemplo: groupByKeys(carros, ["marca", "modelo", "ano"]), ele irá agrupar numa mesma linha os carros que possuem estes três dados em comum.
 export const groupByKeys = <T extends Record<string, any>>(
     data: T[],
     keys: (keyof T)[]
