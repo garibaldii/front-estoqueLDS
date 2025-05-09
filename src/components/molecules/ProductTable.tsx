@@ -15,7 +15,6 @@ type Props = {
 
 export function ProductTable({ localData, setLocalData }: Props) {
 
-
   const removeIndex = (index: number) => {
     const updatedList = [...localData]
     updatedList.splice(index, 1)
@@ -53,7 +52,7 @@ export function ProductTable({ localData, setLocalData }: Props) {
 
               <TableCell>
                 {/*Dado o fato da lista estar ao contrário, é necessário fazer a subtração do seu tamanho pelo index, e ainda -1,(referente a posicao 0) para poder alcancar o valor correspondente. */}
-                <Button type="button" variant={"ghost"} title="Deletar" onClick={() => removeIndex(localData.length - 1 - index)}>❌</Button>
+                <Button type="button" variant={"ghost"} title=" Deletar" onClick={() => removeIndex(localData.length - 1 - index)}>❌</Button>
                 <Button type="button" variant={"ghost"} title="Deletar" onClick={() => console.log("Precisa Implementar")}>✏️</Button>
               </TableCell>
 
