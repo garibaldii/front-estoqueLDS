@@ -134,7 +134,10 @@ export const Orders = () => {
                     </div>
 
                     <div className="mb-6">
-                        <ProductTable localData={listaProdutos} />
+                        <ProductTable 
+                        localData={listaProdutos}
+                        setLocalData={setListaProdutos}
+                        />
                     </div>
 
                     <ClearListButton setLocalData={setListaProdutos} />
