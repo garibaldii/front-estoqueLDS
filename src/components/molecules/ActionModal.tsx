@@ -17,7 +17,7 @@ type Props = {
     open: boolean
 }
 
-export function ModalShadcn({
+export function ActionModal({
     onClose,
     onSubmit,
     title,

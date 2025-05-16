@@ -7,7 +7,7 @@ type Props = {
     hasBackDrop?: boolean
 }
 
-export const Modal = ({ onClose, title, description, hasBackDrop }: Props) => {
+export const AlertModal = ({ onClose, title, description, hasBackDrop }: Props) => {
     return (
         <div className={`fixed inset-0  flex items-center justify-center p-4 w-full ${hasBackDrop ? " bg-black bg-opacity-60" : ""}`}>
             <div className="bg-white rounded-2xl w-full max-w-3xl p-6 text-center shadow-lg overflow-auto">
