@@ -8,11 +8,11 @@ import Image from "next/image"
 import { NavBar } from "@/components/organisms/NavBar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ModalShadcn } from "@/components/molecules/ConfirmationModal"
+import { ActionModal } from "@/components/molecules/ActionModal"
 import ArrowBack from "../../../../../../public/arrowBack"
 
 import { postFile } from "@/services/file"
-import ProductDataTable from "@/components/organisms/datatable/_components/product-datatable"
+import ProductInventoryDataTable from "@/components/organisms/datatable/_components/product-inventory-datatable"
 import { groupByKeys } from "@/utils/filters"
 
 
@@ -122,7 +122,7 @@ const Import = () => {
 
 
                         {confirmationModal && (
-                            <ModalShadcn
+                            <ActionModal
                                 open={true}
                                 onClose={() => setConfirmationModal(false)}
                                 onSubmit={() => handleSubmitFile()}
@@ -146,32 +146,39 @@ const Import = () => {
                         )}
 
                         {successModal && (
-                            <ModalShadcn
+                            <ActionModal
                                 open={true}
                                 onClose={() => setSuccessModal(false)}
                                 onSubmit={() => router.push("/pages/product")}
                                 title={"Produtos Importados com Sucesso! 🎉🥳"}
                                 description={
+                                    <div className="flex gap-4 max-w-6xl">
+                                        {importedProducts.panelData.length > 0 && (
+                                            <div>
+                                                <h1>Painéis</h1>
+                                                {/* Filtra os dados para que sejam exibidos os produtos cadastrados de forma agrupada */}
+                                                <ProductInventoryDataTable
+                                                    products={groupByKeys(importedProducts.panelData, ["marca", "modelo", "potencia"])}
+                                                />
+                                            </div>
+                                        )}
 
-                                    <div className="flex gap-4  max-w-6xl">
-                                        <div>
-                                            <h1>Painéis</h1>
-                                            {/* filtra os dados para que sejam exibidos os produtos cadastrados de forma agrupada, ao invés de mostrar de forma solta */}
-                                            <ProductDataTable products={groupByKeys(importedProducts.panelData, ["marca", "modelo", "potencia",])} />
-                                        </div>
-
-                                        <div>
-                                            <h1>Inversores</h1>
-                                            <ProductDataTable products={groupByKeys(importedProducts.inverterData, ["marca", "modelo", "potencia"])} />
-                                        </div>
-
-                                    </div>}
-
+                                        {importedProducts.inverterData.length > 0 && (
+                                            <div>
+                                                <h1>Inversores</h1>
+                                                <ProductInventoryDataTable
+                                                    products={groupByKeys(importedProducts.inverterData, ["marca", "modelo", "potencia"])}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                }
                             />
                         )}
 
+
                         {errorModal && (
-                            <ModalShadcn
+                            <ActionModal
                                 open={true}
                                 onClose={() => setErrorModal(false)}
                                 onSubmit={() => setErrorModal(false)}
@@ -182,7 +189,7 @@ const Import = () => {
                                             <div key={index} className="p-2 border rounded bg-red-50">
                                                 {Object.entries(erro).map(([chave, valor]) => (
                                                     <p key={chave}>
-                                                        <strong>{chave}:</strong> {valor}
+                                                        <strong>{chave}:</strong> {String({valor})}
                                                     </p>
                                                 ))}
                                             </div>

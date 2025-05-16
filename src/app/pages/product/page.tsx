@@ -1,6 +1,7 @@
 'use client'
 
-import ProductDataTable from "@/components/organisms/datatable/_components/product-datatable"
+import ProductInventoryDataTable from "@/components/organisms/datatable/_components/product-inventory-datatable"
+
 import { NavBar } from "@/components/organisms/NavBar"
 
 import { useInverter } from "@/context/InverterContext"
@@ -20,6 +21,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 
+
+
 const Inventory = () => {
 
     const { panels, refreshPanelData } = usePanel()
@@ -31,10 +34,12 @@ const Inventory = () => {
     const filteredPanels = groupByKeys(panels, ["marca", "modelo", "potencia",])
     const filteredInverters = groupByKeys(inverters, ["marca", "modelo", "potencia"])
 
+
     useEffect(() => {
         refreshInverterData()
         refreshPanelData()
     }, [])
+
 
     return (
         <div className="flex flex-col flex-1">
@@ -42,8 +47,9 @@ const Inventory = () => {
             <NavBar />
 
             <div>
-                <div className="flex items-center p-6">
-                    <h1 className="flex flex-col  gap-8 w-full flex-1 font-bold text-2xl font ">Catálogo de Produtos</h1>
+                <div className="flex items-center p-6 gap-4">
+                    <h1 className="font-bold text-2xl whitespace-nowrap">Catálogo de Produtos</h1>
+                    <div className="flex-grow border-t-2 border-gray-500 "></div>
                     <DropdownMenu >
                         <DropdownMenuTrigger asChild>
                             <div className="bg-blue-500 font-bold text-white border rounded-lg px-4 py-3 text-left hover:bg-blue-600 cursor-pointer">
@@ -70,20 +76,25 @@ const Inventory = () => {
                         <h1>Painéis</h1>
                         <p>Modelos Cadastrados: {countModelQuantity(filteredPanels)}</p>
                         <div className="flex">
-
                             <Input placeholder="Marca"></Input>
                             <Input placeholder="Status do estoque: Disponível, Reservado, Baixo Estoque..."></Input>
                             <Input placeholder="Data de Cadastro"></Input>
                             <Input placeholder="Observações"></Input>
                         </div>
-                        <ProductDataTable products={filteredPanels} />
+
+                        <ProductInventoryDataTable products={filteredPanels} searchFields={["marca", "modelo", "potencia"]} />
                     </div>
 
                     <div className="bg-custom-lds-blur w-1/2">
                         <h1>Inversores</h1>
                         <p>Modelos Cadastrados: {countModelQuantity(filteredInverters)} </p>
-
-                        <ProductDataTable products={filteredInverters} />
+                        <div className="flex">
+                            <Input placeholder="Marca"></Input>
+                            <Input placeholder="Status do estoque: Disponível, Reservado, Baixo Estoque..."></Input>
+                            <Input placeholder="Data de Cadastro"></Input>
+                            <Input placeholder="Observações"></Input>
+                        </div>
+                        <ProductInventoryDataTable products={filteredInverters} searchFields={["marca", "modelo", "potencia"]} />
                     </div>
                 </main>
             </div>
