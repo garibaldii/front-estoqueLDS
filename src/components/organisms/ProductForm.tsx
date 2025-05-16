@@ -3,22 +3,22 @@
 import { useState, useRef } from "react"
 
 import { ProductTable } from "../molecules/ProductTable"
-import { Toast } from "../molecules/Toast"
+import { useToast } from "@/hooks/use-toast"
 
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 
 import { alreadyExist } from "@/utils/localProductData"
 
-import { Modal } from "../molecules/Modal"
+import { AlertModal } from "../molecules/AlertModal"
 import { GoBackButton } from "../atoms/GoBackButton"
-import { addToastMessage } from "@/utils/toastUtilities"
 import { isInputValid } from "@/utils/productUtils"
 import ClearListButton from "../atoms/ClearListButton"
+import { Product } from "@/types/IProduct"
 
 
 type ProductFormProps = {
-    submitFunction: (data: any[]) => Promise<any>;
+    submitFunction: (data: Product[]) => Promise<any>;
     title: string;
     extraFields?: React.ReactNode
     extraFieldsData?: Record<any, any>
@@ -26,23 +26,25 @@ type ProductFormProps = {
 
 export const ProductForm = ({ submitFunction, title, extraFields: extraField, extraFieldsData: extraFieldData }: ProductFormProps) => {
 
+    const { toast } = useToast()
+
     const [marca, setMarca] = useState("")
     const [modelo, setModelo] = useState("")
     const [codigoDeBarras, setCodigoDeBarras] = useState("")
-    const [potencia, setPotencia] = useState("")
+    const [potencia, setPotencia] = useState(0)
 
     const codigoRef = useRef<HTMLInputElement>(null)
 
-    const [toastMessages, setToastMessages] = useState<string[]>([])
-    const [modal, setModal] = useState<null | { title: string; description: string }>(null)
+    const [alertModal, setAlertModal] = useState<null | { title: string; description: string }>(null)
 
-    const [localData, setLocalData] = useState<any>([])
+    const [localData, setLocalData] = useState<Product[]>([])
 
     const handleAddLocalData = () => {
         if (isInputValid(marca, modelo, codigoDeBarras, potencia)) {
 
+
             //Recolhe os dados do produto
-            const newProduct = {
+            const newProduct: Product = {
                 marca,
                 modelo,
                 codigoDeBarras,
@@ -52,13 +54,20 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
 
             //verifica existência na lista local
             if (alreadyExist(newProduct, localData)) {
-                addToastMessage(setToastMessages, `Código de barras "${codigoDeBarras} já adicionado na lista"`)
+
+
+                toast({
+                    title: "Erro",
+                    variant: "destructive",
+                    description: `Código de barras "${codigoDeBarras}" já adicionado na lista`
+                })
+
                 setCodigoDeBarras("")
                 return
             }
 
             //adiciona a lista
-            setLocalData((prev: any) => [...prev, newProduct])
+            setLocalData(prev => [...prev, newProduct])
 
             //limpa código de barras
             setCodigoDeBarras("")
@@ -68,15 +77,24 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
             return
         }
 
-        addToastMessage(setToastMessages, `Todos os campos são obrigatórios`)
+        toast({
+            title: "Erro",
+            variant: "destructive",
+            description: `Todos os campos são obrigatórios!`
+        })
         return
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         console.log(localData)
+
         if (!localData.length) {
-            addToastMessage(setToastMessages, `Lista de produtos vazia, tente adicionar primeiro`)
+            toast({
+                title: "Erro",
+                variant: "destructive",
+                description: `Lista de Produtos vazia, tente adicionar primeiro`
+            })
             return
         }
 
@@ -84,14 +102,14 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
             const result = await submitFunction(localData)
             console.log(result)
 
-            setModal({
+            setAlertModal({
                 title: "Sucesso!",
                 description: result.message
             })
             setLocalData([])
 
         } catch (error: any) {
-            setModal({
+            setAlertModal({
                 title: "Erro",
                 description: error.response.data.message
             })
@@ -132,7 +150,7 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                             className="bg-gray-200 w-[25%] focus:bg-white"
                             placeholder="Potência"
                             value={potencia}
-                            onChange={(e) => setPotencia(e.target.value)}
+                            onChange={(e) => setPotencia(Number(e.target.value))}
                             required
                         />
 
@@ -153,10 +171,8 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                                     handleAddLocalData()
                                 }
                             }}
-                            
-                        />
 
-                        
+                        />
 
                         <button
                             type="button"
@@ -171,7 +187,7 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                         <ProductTable localData={localData} setLocalData={setLocalData} />
                     </div>
 
-                    <ClearListButton setLocalData={setLocalData}/>
+                    <ClearListButton setLocalData={setLocalData} />
 
 
                     <Button type="submit" className="w-full font-mono bg-green-500 text-md mt-3">
@@ -180,25 +196,15 @@ export const ProductForm = ({ submitFunction, title, extraFields: extraField, ex
                 </div>
             </form>
 
-
-
-            {modal && (
-                <Modal
-                    onClose={() => setModal(null)}
-                    title={modal.title}
-                    description={modal.description}
+            {alertModal && (
+                <AlertModal
+                    onClose={() => setAlertModal(null)}
+                    title={alertModal.title}
+                    description={alertModal.description}
                     hasBackDrop={true}
                 />
             )}
 
-            <Toast
-                messages={toastMessages}
-                onRemoveMessage={(index) => {
-                    setToastMessages((prevMessages) =>
-                        prevMessages.filter((_, i) => i !== index)
-                    )
-                }}
-            />
         </div>
     )
 }
