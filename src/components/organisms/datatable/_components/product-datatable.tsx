@@ -2,11 +2,11 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-import { Product } from "../_interfaces/product"
 import { DataTable } from "@/components/ui/datatable"
 import { Button } from "@/components/ui/button"
-import { ArrowUpDown } from "lucide-react"
 
+import { ArrowUpDown } from "lucide-react"
+import { Product } from "../../../../types/IProduct"
 
 
 const columns: ColumnDef<Product>[] = [
@@ -40,10 +40,10 @@ const columns: ColumnDef<Product>[] = [
         }
     },
     {
-        accessorKey: "quantidade",
-        header: "Quantidade",
+        accessorKey: "codigoDeBarras",
+        header: "Código de Barras",
         cell: ({ row }) => {
-            return <div>{row.getValue("quantidade")}</div>
+            return <div>{row.getValue("codigoDeBarras")}</div>
         }
     }
 
@@ -51,10 +51,11 @@ const columns: ColumnDef<Product>[] = [
 
 interface Props {
     products: Product[]
+    searchFields?: string[]
 }
 
 
-export default function ProductDataTable({ products }: Props) {
+export default function ProductDataTable({ products, searchFields }: Props) {
 
-    return <DataTable columns={columns} data={products} pageSize={5} searchFields={['marca', 'modelo', 'potencia']} />
+    return <DataTable columns={columns} data={products} pageSize={5} searchFields={searchFields} />
 }
