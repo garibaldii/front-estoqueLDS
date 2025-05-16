@@ -9,7 +9,7 @@ export const fetchProductByCode = async (codigoDeBarras: string) => {
     }
 }
 
-export const isInputValid = (marca: string, modelo: string, codigoDeBarras: string, potencia: string) => {
+export const isInputValid = (marca: string, modelo: string, codigoDeBarras: string, potencia: number) => {
     return !!marca && !!modelo && !!codigoDeBarras && !!potencia
 }
 
