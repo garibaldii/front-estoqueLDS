@@ -3,17 +3,40 @@ import { useRouter } from "next/navigation"
 
 import { Button } from "../ui/button"
 
-import SaidaIcon from "../../../public/saidaIcon"
 import EstoqueIcon from "../../../public/estoqueIcon"
 import HistoricoIcon from "../../../public/historicoIcon"
+
+import { jwtDecode } from 'jwt-decode'
+import { useEffect, useState } from "react"
+
+type tokenPayload = {
+    email: string
+}
+
 
 export const NavBar = () => {
     const router = useRouter();
 
+    const [email, setEmail] = useState("")
+
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+
+        if (token) {
+            try {
+                const decoded = jwtDecode<tokenPayload>(token)
+                const email = decoded.id
+                setEmail(email)
+                setEmail(email)
+            } catch (error: any) {
+                console.error(error.data.response)
+            }
+        }
+    })
+
+
     return (
         <div>
-
-
             <div className="bg-custom-lds-blur flex items-center justify-between ">
 
                 <Image
@@ -29,14 +52,17 @@ export const NavBar = () => {
                     <EstoqueIcon /> Produtos
                 </Button>
 
-                <Button variant="outline" onClick={() => router.push("/pages/outcoming")}>
-                    <SaidaIcon /> Saída de Pedidos
+
+                <Button variant="outline" onClick={() => router.push("/pages/order")}>
+                    <HistoricoIcon /> Pedidos
                 </Button>
 
 
-                <Button variant="outline" onClick={() => router.push("/pages/history")}>
-                    <HistoricoIcon /> Histórico
+                <Button variant="outline" >
+                    Chefe {email}
                 </Button>
+
+
 
             </div>
         </div>
