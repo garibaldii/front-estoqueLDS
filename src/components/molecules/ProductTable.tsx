@@ -7,10 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "../ui/button";
+import { Product } from "@/types/IProduct";
 
 type Props = {
-  localData: any[],
-  setLocalData: (data: any) => void
+  localData: Product[],
+  setLocalData: (data:  Product[]) => void
 }
 
 export function ProductTable({ localData, setLocalData }: Props) {
@@ -38,7 +39,7 @@ export function ProductTable({ localData, setLocalData }: Props) {
         </TableHeader>
         <TableBody>
           {/* Inverting local list to help operator visualize*/}
-          {[...localData].reverse().map((product: any, index: number) => (
+          {[...localData].reverse().map((product: Product, index: number) => (
             <TableRow key={index}>
 
               {/*#*/}
@@ -53,7 +54,7 @@ export function ProductTable({ localData, setLocalData }: Props) {
               <TableCell>
                 {/*Dado o fato da lista estar ao contrário, é necessário fazer a subtração do seu tamanho pelo index, e ainda -1,(referente a posicao 0) para poder alcancar o valor correspondente. */}
                 <Button type="button" variant={"ghost"} title=" Deletar" onClick={() => removeIndex(localData.length - 1 - index)}>❌</Button>
-                <Button type="button" variant={"ghost"} title="Deletar" onClick={() => console.log("Precisa Implementar")}>✏️</Button>
+                <Button type="button" variant={"ghost"} title="Deletar" onClick={() => alert("Precisa Implementar")}>✏️</Button>
               </TableCell>
 
             </TableRow>
