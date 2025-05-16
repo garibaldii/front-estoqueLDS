@@ -50,15 +50,17 @@ interface DataTableProps<TData, TValue> {
   searchFields?: string[];
   defaultSearch?: string;
   searchPlaceholder?: string;
+  onRowClick?: (row: TData) => void
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pageSize = 10,
+  pageSize = 5,
   searchFields = [],
   defaultSearch = "",
   searchPlaceholder = "Filtre por dados abaixo",
+  onRowClick
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState(defaultSearch);
@@ -96,25 +98,28 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+
       {/*Filters */}
-      <div className="flex items-center py-4">
-        <Input
-          placeholder={searchPlaceholder}
-          value={globalFilter}
-          onChange={(event) => setGlobalFilter(event.target.value)}
-          className="max-w-sm"
-        />
-      </div>
+      {searchFields.length > 0 &&
+        <div className="flex items-center py-4">
+          <Input
+            placeholder={searchPlaceholder}
+            value={globalFilter}
+            onChange={(event) => setGlobalFilter(event.target.value)}
+            className="max-w-sm"
+          />
+        </div>}
+
 
       {/*Table */}
       <div className="rounded-md border-black">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="border-black" key={headerGroup.id}>
+              <TableRow className="border-black " key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-gray-950 font-bold">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -134,6 +139,7 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="border-black"
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
@@ -159,24 +165,26 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Anterior
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Próxima
-        </Button>
-      </div>
+      {
+        data.length > 5 &&
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Anterior
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Próxima
+          </Button>
+        </div>}
     </div>
   );
 }
