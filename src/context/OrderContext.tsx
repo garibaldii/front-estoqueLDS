@@ -3,9 +3,10 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from "react"
 
 import { getOrders } from "@/services/orders"
+import { Order } from "@/types/IOrder"
 
 type OrderContextType = {
-    orders: any[]
+    orders: Order[]
     loading: boolean
     refreshOrderData: () => void
 }

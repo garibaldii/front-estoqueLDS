@@ -5,11 +5,12 @@ import { useMemo, useState } from "react";
 
 import { DataTable } from "@/components/ui/datatable"
 import { Button } from "@/components/ui/button";
-import { Modal } from "@/components/molecules/Modal";
+import { AlertModal } from "@/components/molecules/AlertModal";
 
-import { Order } from "../_interfaces/order";
-import { groupByKeys } from "@/utils/filters";
-import { ProductTable } from "@/components/molecules/ProductTable";
+import { Order } from "../../../../types/IOrder";
+
+import { formatDateToBrasila_BR_Time } from "@/utils/date";
+import ProductDataTable from "./product-datatable";
 
 interface Props {
     orders: Order[]
@@ -17,7 +18,7 @@ interface Props {
 
 export default function OrderDataTable({ orders }: Props) {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
-
+    
 
     //memoriza em memória cache apenas uma vez as colunas, e as renderiza caso tenha mudança no pedido selecionado
     const columns = useMemo<ColumnDef<Order>[]>(() => [
@@ -47,10 +48,16 @@ export default function OrderDataTable({ orders }: Props) {
             accessorKey: "dataSaida",
             header: "Data/Hora de Separação",
             cell: ({ row }) => {
-                return <div>{row.getValue("dataSaida")}</div>
+
+                const formattedDate = formatDateToBrasila_BR_Time(row.getValue("dataSaida"))
+
+                return <div>{formattedDate}</div>
             }
         }
     ], [setSelectedOrder])
+
+
+  
 
 
     return (
@@ -63,10 +70,10 @@ export default function OrderDataTable({ orders }: Props) {
             />
 
             {selectedOrder && (
-                <Modal
+                <AlertModal
                     title={selectedOrder.codigoPedido}
                     description={
-                        <ProductTable localData={selectedOrder.listaProdutos}/>
+                        <ProductDataTable products={selectedOrder.listaProdutos} />
                     }
                     onClose={() => setSelectedOrder(null)}
                 />
