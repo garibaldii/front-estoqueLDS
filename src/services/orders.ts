@@ -1,7 +1,7 @@
 import { api } from "./http";
 
 export const postOrder = async (order: any) => {
-    const response = await api.post("/pedido", order)
+    const response = await api.post("/order", order)
 
     const data = response.data
 
@@ -10,7 +10,7 @@ export const postOrder = async (order: any) => {
 
 
 export const getOrders = async () => {
-    const response = await api.get("/pedido")
+    const response = await api.get("/order")
 
     const data = response.data
 

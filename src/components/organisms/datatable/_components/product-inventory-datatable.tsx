@@ -63,7 +63,9 @@ export default function ProductInventoryDataTable({ products, searchFields }: Pr
                 data={products}
                 pageSize={5}
                 searchFields={searchFields}
-                onRowClick={(product) => console.log(`Produto Clicado: ${JSON.stringify(product)}`)}
+                onRowClick={(product) => console.log(`Produto Clicado: ${JSON.stringify(product)}`)
+                
+                }
             />
         </>
     )

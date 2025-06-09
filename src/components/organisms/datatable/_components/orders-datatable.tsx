@@ -49,7 +49,7 @@ export default function OrderDataTable({ orders }: Props) {
             header: "Data/Hora de Separação",
             cell: ({ row }) => {
 
-                const formattedDate = formatDateToBrasila_BR_Time(row.getValue("dataSaida"))
+                const formattedDate = formatDateToBrasila_BR_Time(row.getValue("incomindDate"))
 
                 return <div>{formattedDate}</div>
             }

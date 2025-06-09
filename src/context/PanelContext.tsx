@@ -19,7 +19,7 @@ export const PanelProvider = ({children}: {children: ReactNode}) => {
     const fetchData = async () => {
         try {
             const panelsData = await getPanels()
-            setPanels(panelsData.paineis)
+            setPanels(panelsData.panels)
         } catch (error) {
             console.error(error)
         }finally{

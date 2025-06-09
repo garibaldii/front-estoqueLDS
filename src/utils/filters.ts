@@ -1,12 +1,12 @@
-export const groupByModel = (data: { modelo: string }[]) => {
+export const groupByModel = (data: { model: string }[]) => {
     const countMap = data.reduce((acc: Record<string, number>, item) => {
-        acc[item.modelo] = (acc[item.modelo] || 0) + 1;
+        acc[item.model] = (acc[item.model] || 0) + 1;
         return acc
     }, {})
 
-    return Object.entries(countMap).map(([modelo, quantidade]) => ({
-        modelo,
-        quantidade
+    return Object.entries(countMap).map(([model, qtd]) => ({
+        model,
+        qtd
     }))
 }
 

@@ -20,7 +20,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     const fetchData = async () => {
         try {
             const ordersData = await getOrders()
-            setOrders(ordersData.pedidos)
+            setOrders(ordersData.orders)
 
         } catch (error) {
             console.error(error)

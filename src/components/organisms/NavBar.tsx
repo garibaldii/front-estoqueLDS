@@ -8,31 +8,42 @@ import HistoricoIcon from "../../../public/historicoIcon"
 
 import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState } from "react"
+import { getUser } from "@/services/user"
+import { User } from "@/types/IUser"
 
 type tokenPayload = {
-    email: string
+    id: string
 }
 
 
 export const NavBar = () => {
     const router = useRouter();
 
-    const [email, setEmail] = useState("")
+    const [user, setUser] = useState<User | null>(null)
 
     useEffect(() => {
-        const token = localStorage.getItem("token")
+        const fetchUser = async () => {
+            const token = localStorage.getItem("token")
 
-        if (token) {
-            try {
-                const decoded = jwtDecode<tokenPayload>(token)
-                const email = decoded.id
-                setEmail(email)
-                setEmail(email)
-            } catch (error: any) {
-                console.error(error.data.response)
+            if (token) {
+                try {
+                    const decoded = jwtDecode<tokenPayload>(token)
+                    const id = decoded.id
+
+                    console.log("ID decodificado:", id)
+
+                    const userData = await getUser(id)
+                    setUser(userData)
+
+                    console.log("Usuário carregado:", userData)
+                } catch (error: any) {
+                    console.error("Erro ao buscar usuário:", error?.response || error)
+                }
             }
         }
-    })
+
+        fetchUser()
+    }, [])
 
 
     return (
@@ -59,8 +70,10 @@ export const NavBar = () => {
 
 
                 <Button variant="outline" >
-                    Chefe {email}
+                   Olá Chefe, {user?.name}
                 </Button>
+
+
 
 
 
