@@ -1,4 +1,4 @@
-# 🔋 Gerenciador de Estoque
+#  Gerenciador de Estoque
 
 Este repositório contém o sistema de **gerenciamento de estoque** da **LDS Energia Solar**, voltado para o controle e rastreio de **painéis e inversores fotovoltaicos**, com suporte a **scanner de código de barras**, cadastro técnico de componentes e funcionalidades práticas para uso no dia a dia da operação.
 
@@ -43,4 +43,4 @@ A API que alimenta este sistema está disponível aqui:
 
 ---
 
-*Desenvolvido com ⚡ por [@garibaldii](https://github.com/garibaldii) e devidamente autorizado* 
+*Desenvolvido com ⚡ por [@garibaldii](https://github.com/garibaldii)* 
